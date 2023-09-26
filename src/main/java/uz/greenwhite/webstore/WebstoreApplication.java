@@ -9,10 +9,7 @@ import java.util.Collections;
 public class WebstoreApplication {
 
 	public static void main(String[] args) {
-		SpringApplication app = new SpringApplication(WebstoreApplication.class);
-		app.setDefaultProperties(Collections
-				.singletonMap("server.port", "8083"));
-		app.run(args);
+		SpringApplication.run(WebstoreApplication.class);
 	}
 
 }
