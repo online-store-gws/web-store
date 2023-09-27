@@ -43,8 +43,9 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/")
                         .permitAll()
-                        .requestMatchers("/admin/**").hasAnyRole(UserRole.SELLER.name(), UserRole.MODERATOR.name())
-                        .requestMatchers("/login").permitAll()
+                        .requestMatchers("/moderator/**").hasRole(UserRole.MODERATOR.name())
+                        .requestMatchers("/seller/**").hasAnyRole(UserRole.SELLER.name(), UserRole.MODERATOR.name())
+                        .requestMatchers("/login", "/register").permitAll()
 
                         .anyRequest().authenticated()
                 )
@@ -53,9 +54,13 @@ public class SecurityConfiguration {
                         .loginProcessingUrl("/login")
                         .successHandler((request, response, authentication) -> {
                             if (authentication.getPrincipal() instanceof User user) {
-                                if (user.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_" + UserRole.MODERATOR)) ||
-                                        user.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_" + UserRole.SELLER))) {
-                                    response.sendRedirect("admin/dashboard");
+                                if (user.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_" + UserRole.MODERATOR))) {
+                                    response.sendRedirect("moderator/dashboard");
+                                }
+                            }
+                            else if (authentication.getPrincipal() instanceof User user) {
+                                if (user.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_" + UserRole.SELLER))) {
+                                    response.sendRedirect("seller/dashboard");
                                 }
                             }
                             else
