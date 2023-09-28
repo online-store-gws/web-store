@@ -1,88 +1,89 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{admin/commons::head}"></head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
 
-  <!-- Navbar -->
-  <div th:replace="~{admin/commons::header}"></div>
-  <!-- /.navbar -->
+    <!-- Navbar -->
+    <div th:replace="~{admin/commons::header}"></div>
+    <!-- /.navbar -->
 
-  <!-- Main Sidebar Container -->
-  <aside th:replace="~{admin/commons::aside}"></aside>
+    <!-- Main Sidebar Container -->
+    <aside th:replace="~{admin/commons::aside}"></aside>
 
-  <!-- Content Wrapper. Contains page content -->
-  <!-- /.content-wrapper -->
-  <div class="content-wrapper">
-    <div class="container">
-      <h3 class="text-center mt-2">Product List</h3>
-      <a name="" class="btn btn-primary" th:href="@{/admin/data/product/add}" role="button">Add product</a>
-      <table class="table table-bordered table-inverse mt-3">
-        <thead class="thead-inverse">
-        <thead class="thead-inverse mt-3 ">
-        <tr>
-          <th>ID</th>
-          <th>NAME</th>
-          <th>CATEGORY</th>
-          <th>PRICE</th>
-          <th>PHOTO</th>
-          <th>QUANTITY</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="item: ${categories}">
-          <td scope="row" th:text="${item.categoryId}"></td>
-          <td th:text="${item.categoryName}"></td>
+    <!-- Content Wrapper. Contains page content -->
+    <!-- /.content-wrapper -->
+    <div class="content-wrapper py-2">
+        <div class="container">
+            <h3 class="text-center">Product List</h3>
+            <a name="" class="btn btn-primary" th:href="@{/admin/data/product/add}" role="button">Add product</a>
+            <table class="table table-bordered table-inverse mt-3">
+                <thead class="thead-inverse">
+                <thead class="thead-inverse mt-3 ">
+                <tr>
+                    <th>ID</th>
+                    <th>NAME</th>
+<!--                    <th>CATEGORY</th>-->
+                    <th>PRICE</th>
+<!--                    <th>PHOTO</th>-->
+                    <th>QUANTITY</th>
+                    <th>DESCRIPTION</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="product: ${products}">
+                    <td scope="row" th:text="${product.productId}"></td>
+                    <td th:text="${product.productName}"></td>
+<!--                    <td th:text="${product.category}"></td>-->
+                    <td th:text="${product.price}"></td>
+                    <td th:text="${product.quantity}"></td>
+                    <td th:utext="${product.description}"></td>
+                    <td>
+                        <a name="" id="" class="btn btn-primary" href="#"
+                           th:href="@{/admin/data/product/edit(id=${product.productId})}" role="button">
+                            <i class="fa fa-pen" aria-hidden="true"></i>
+                        </a>
+                        <button type="button" class="btn btn-danger" data-toggle="modal"
+                                th:data-target="${'#id'+product.productId}">
+                            <i class="fa fa-trash" aria-hidden="true"></i>
+                        </button>
 
+                    </td>
 
-          <td>
-            <a name="" id="" class="btn btn-primary" href="#"
-               th:href="@{/admin/data/category/edit(id=${item.categoryId})}" role="button">
-              <i class="fa fa-pen" aria-hidden="true"></i>
-            </a>
-            <button type="button" class="btn btn-danger" data-toggle="modal"
-                    th:data-target="${'#id'+item.categoryId}">
-              <i class="fa fa-trash" aria-hidden="true"></i>
-            </button>
-
-          </td>
-          <div class="modal fade" th:attr="id='id' + ${item.categoryId}"
-               tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title">O'chrish</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-
-
-                <div class="modal-body">
-                  Siz rostdan ham <span class="alert-danger" th:text="${item.categoryName}"></span>ni
-                  o'chirmoqchimisiz?
-                </div>
+                    <div class="modal fade" th:attr="id='id' + ${product.productId}"
+                         tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">O'chirish</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
 
 
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <a th:href="@{'/admin/data/category/delete/' + ${item.categoryId}}" type="button"
-                     class="btn btn-danger">O'chirish</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </tr>
-        </tbody>
-      </table>
+                                <div class="modal-body">
+                                    Siz rostdan ham <span class="alert-danger" th:text="${product.productName}"></span>ni
+                                    o'chirmoqchimisiz?
+                                </div>
+
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <a th:href="@{'/admin/data/product/delete/' + ${product.productId}}" type="button"
+                                       class="btn btn-danger">O'chirish</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-  </div>
-
+    <!--    footer -->
+    <footer th:replace="~{admin/commons::footer}"></footer>
 </div>
-
-
-<!-- Main Footer -->
-<footer th:replace="~{admin/commons::footer}"></footer>
 </div>
 <th:block th:replace="~{admin/commons::scripts}"></th:block>
 </body>

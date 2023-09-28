@@ -1,118 +1,135 @@
 <!DOCTYPE html>
-<html lang="en"
-><!--     yengi kiritilgan -->
-<head th:replace="~{admin/commons::head}"></head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"><!--     yengi kiritilgan -->
+<head th:replace="~{admin/commons::head}">
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+</head>
 
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
 
-  <!-- Navbar -->
-  <div th:replace="~{admin/commons::header}"></div>
-  <!-- /.navbar -->
+    <!-- Navbar -->
+    <div th:replace="~{admin/commons::header}"></div>
+    <!-- /.navbar -->
 
-  <!-- Main Sidebar Container -->
-  <aside th:replace="~{admin/commons::aside}"></aside>
+    <!-- Main Sidebar Container -->
+    <aside th:replace="~{admin/commons::aside}"></aside>
 
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-    <div class="container pt-4">
-      <div class="card">
-        <div class="card-header">
-          <h4 class="card-title">Add new product</h4>
-        </div>
-        <div class="card-body">
-          <form method="post"
-                enctype="multipart/form-data"
-                th:action="${(category.categoryId==null) ? '/admin/data/product/add' : '/admin/data/category/edit'}"
-                th:object="${category}">
-            <div class="form-group" th:if="${category.categoryId} != null">
-              <label for="id">ID</label>
-              <input type="text" readonly th:field="*{categoryId}" name="id" id="id" class="form-control"
-                     placeholder="ID ..." aria-describedby="id">
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper py-2">
+        <div class="container">
+            <h3 class="text-center">Product Add</h3>
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Add new product</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post"
+                          enctype="multipart/form-data"
+                          th:action="${(product.productId == null) ? '/admin/data/product/add' : '/admin/data/product/edit'}"
+                          th:object="${product}">
+                        <div class="form-group" th:if="${product.productId} != null">
+                            <label for="id">ID</label>
+                            <input type="text" readonly th:field="*{productId}" name="id" id="id" class="form-control"
+                                   placeholder="ID ..." aria-describedby="id">
 
+                        </div>
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" th:field="*{productName}" name="name" id="name" required
+                                   class="form-control"
+                                   placeholder="Product name ..." aria-describedby="name">
+                            <small id="title1_" class="text-muted">Enter name</small>
+
+                            <div class="form-group">
+                                <label for="number">Category</label>
+
+                                <input type="number" th:field="*{category}" name="category" id="category" required
+                                       class="form-control"
+                                       placeholder="Category id ..." aria-describedby="name">
+
+                                <small id="title2_" class="text-muted">Enter category id</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="number">Price</label>
+                                <input type="number" th:field="*{price}" name="price" id="price" required
+                                       class="form-control"
+                                       placeholder="Price ..." aria-describedby="name">
+
+                                <small id="title3_" class="text-muted">Enter price</small>
+                            </div>
+
+                            <div>
+                                <label for="formFile" class="form-label">Photo</label>
+
+                                <input type="file" name="photo" id="formFile" required
+                                       class="form-control"/>
+                                <small id="title4_" class="text-muted">Choose photo</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="name">Quantity</label>
+
+                                <input type="number" th:field="*{quantity}" name="quantity" id="quantity" required
+                                       class="form-control"
+                                       placeholder="Quantity ..." aria-describedby="name">
+
+                                <small id="title5_" class="text-muted">Enter quantity</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="times-sold">Times sold</label>
+
+                                <input type="number" th:field="*{times_sold}" name="times-sold" id="times-sold" required
+                                       class="form-control"
+                                       placeholder="Quantity ..." aria-describedby="name">
+
+                                <small id="title6_" class="text-muted">Enter times sold</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="description">Description</label>
+                                <textarea id="description" th:field="*{description}"></textarea>
+
+                                <div class="form-group" data-style="btn-primary" data-width="fit"
+                                     th:if="${product.productId} != null">
+                                </div>
+                                <small id="title7_" class="text-muted">Enter description</small>
+                            </div>
+
+                            <div class="form-group" data-style="btn-primary" data-width="fit"
+                                 th:if="${product.productId} != null">
+                                <select th:field="*{isActive}" class="form-control"
+                                        aria-label="Default select example">
+                                    <option th:value="${category.isActive}" selected
+                                            th:text="${category.isActive} ? ACTIVE : PASSIVE"></option>
+                                    <option th:value="${!category.isActive}"
+                                            th:text="${category.isActive} ? PASSIVE  : ACTIVE"></option>
+                                </select>
+                            </div>
+
+                        </div>
+                        <a class="btn btn-secondary" th:href="@{/admin/data/product}" role="button">Go
+                            back</a>
+                        <button type="submit" class="btn btn-success">Save</button>
+                    </form>
+                </div>
             </div>
-            <div class="form-group">
-              <label for="name">Name</label>
-              <input type="text" th:field="*{categoryName}" name="name" id="name" required
-                     class="form-control"
-                     placeholder="Product name ..." aria-describedby="name">
-              <small id="title1_" class="text-muted">Enter name</small>
-
-              <div class="form-group">
-              <label for="name">Category</label>
-
-              <input type="text" th:field="*{categoryName}" name="category" id="category" required
-                     class="form-control"
-                     placeholder="Category id ..." aria-describedby="name">
-
-              <small id="title2_" class="text-muted">Enter category id</small>
-              </div>
-
-              <div class="form-group">
-                <label for="name">Price</label>
-                <input type="text" th:field="*{categoryName}" name="price" id="price" required
-                       class="form-control"
-                       placeholder="Price ..." aria-describedby="name">
-
-                <small id="title3_" class="text-muted">Enter price</small>
-              </div>
-
-              <div class="form-group">
-                <label for="name">Photo</label>
-
-                <input type="text" th:field="*{categoryName}" name="photo" id="photo" required
-                       class="form-control"
-                       placeholder="Photo ..." aria-describedby="name">
-
-                <small id="title4_" class="text-muted">Enter photo</small>
-              </div>
-
-              <div class="form-group">
-                <label for="name">Quantity</label>
-
-                <input type="text" th:field="*{categoryName}" name="quantity" id="quantity" required
-                       class="form-control"
-                       placeholder="Quantity ..." aria-describedby="name">
-
-                <small id="title5_" class="text-muted">Enter quantity</small>
-              </div>
-
-              <div class="form-group">
-                <label for="name">Description</label>
-
-                <input type="text" th:field="*{categoryName}" name="description" id="description" required
-                       class="form-control"
-                       placeholder="Description ..." aria-describedby="name">
-
-                <small id="title6_" class="text-muted">Enter description</small>
-              </div>
-
-              <div class="form-group" data-style="btn-primary" data-width="fit"
-                   th:if="${category.categoryId} != null">
-                <select th:field="*{isActive}" class="form-control"
-                        aria-label="Default select example">
-                  <option th:value="${category.isActive}" selected
-                          th:text="${category.isActive} ? ACTIVE : PASSIVE"></option>
-                  <option th:value="${!category.isActive}"
-                          th:text="${category.isActive} ? PASSIVE  : ACTIVE"></option>
-                </select>
-              </div>
-
-            </div>
-            <a class="btn btn-secondary" th:href="@{/admin/data/product}" role="button">Go
-              back</a>
-            <button type="submit" class="btn btn-success">Save</button>
-          </form>
         </div>
-      </div>
     </div>
-  </div>
 
-  <!-- Main Footer -->
-  <footer th:replace="~{admin/commons::footer}"></footer>
+    <!-- Main Footer -->
+    <footer th:replace="~{admin/commons::footer}"></footer>
 </div>
 
 
 <th:block th:replace="~{admin/commons::scripts}"></th:block>
+
+<script>
+    $(document).ready(function() {
+        $('#description').summernote();
+    });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 </body>
 </html>
