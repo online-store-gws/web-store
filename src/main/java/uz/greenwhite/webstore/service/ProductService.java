@@ -1,5 +1,6 @@
 package uz.greenwhite.webstore.service;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -7,7 +8,7 @@ import org.springframework.stereotype.Service;
 import uz.greenwhite.webstore.entity.Product;
 import uz.greenwhite.webstore.repository.ProductRepository;
 
-
+@AllArgsConstructor
 @Service
 public class ProductService {
 
@@ -36,5 +37,4 @@ public class ProductService {
     public void deleteById(Long ID) {
         repository.deleteById(ID);
     }
-
 }

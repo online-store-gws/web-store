@@ -9710,3 +9710,16 @@ a.text-dark:hover, a.text-dark:focus {
     transform: translateY(-15px);
   }
 }
+.card {
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+.card-img-top {
+    border-radius: 10px 10px 0 0;
+    height: 300px;
+    object-fit: cover;
+}
+.card-body {
+    padding: 15px;
+}
