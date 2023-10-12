@@ -64,6 +64,7 @@ public class ProductController {
     @PostMapping("/edit")
     public String editProduct(@ModelAttribute Product updatedProduct, @RequestParam("file") MultipartFile file) throws IOException {
         Product originalProduct = service.getById(updatedProduct.getProductId());
+        originalProduct.setIsActive(updatedProduct.getIsActive());
 
         if (originalProduct != null) {
             Integer currentQuantity = originalProduct.getQuantity();
@@ -79,8 +80,6 @@ public class ProductController {
             }
 
             originalProduct.setQuantity(currentQuantity);
-
-
             service.update(originalProduct);
 
             saveFile(originalProduct, file);

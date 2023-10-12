@@ -98,6 +98,7 @@
                     <div class="form-group" data-style="btn-primary" data-width="fit"
                          th:if="${product.productId} != null">
                         <label for="name">Status</label>
+
                         <select th:field="*{isActive}" class="form-control"
                                 aria-label="Default select example">
                             <option th:value="${product.isActive}" selected

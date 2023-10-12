@@ -39,6 +39,7 @@
 							       class="form-control"
 							       placeholder="Enter name" aria-describedby="name">
 						</div>
+
 						<div class="form-group" data-style="btn-primary" data-width="fit"
 						     th:if="${category.categoryId} != null">
 							<label for="name">Status</label>
@@ -51,6 +52,7 @@
 								        th:text="${category.isActive} ? PASSIVE  : ACTIVE"></option>
 							</select>
 						</div>
+
 						<a class="btn btn-secondary" th:href="@{/admin/data/category}" role="button">Go
 							back</a>
 						<button type="submit" class="btn btn-success">Save</button>

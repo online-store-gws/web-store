@@ -59,6 +59,7 @@
                     <div class="form-group">
                         <label for="role">Role</label>
                         <select id="role" th:field="*{role}" class="form-control" required>
+                            <option value="" disabled selected> Role </option>
                             <option th:value="${ROLE_SELLER}">Seller</option>
                             <option th:value="${ROLE_MODERATOR}">Moderator</option>
                         </select>
@@ -66,8 +67,8 @@
                     <div class="form-group">
                         <label for="isActive">Status</label>
                         <select id="isActive" th:field="*{isActive}" class="form-control" required>
-                            <option th:value="ACTIVE">Active</option>
-                            <option th:value="PASSIVE">Passive</option>
+                            <option th:value="true">Active</option>
+                            <option th:value="false">Passive</option>
                         </select>
                     </div>
                     <!-- Другие поля для данных о продавце -->
