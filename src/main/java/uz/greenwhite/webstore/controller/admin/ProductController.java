@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import uz.greenwhite.webstore.entity.Product;
 import uz.greenwhite.webstore.service.CategoryService;
 import uz.greenwhite.webstore.service.ProductService;
+import uz.greenwhite.webstore.util.ImageUtil;
 
 import java.io.*;
 
@@ -24,8 +25,6 @@ public class ProductController {
     private final ProductService service;
 
     private final CategoryService categoryService;
-
-    private final String FILE_ROOT = "FILES";
 
     @GetMapping()
     public String listPage(Model model, Pageable pageable) {
@@ -40,17 +39,17 @@ public class ProductController {
         model.addAttribute("categories", categoryService.getAll(pageable));
         return "/admin/data/product/add";
     }
-//    @PostMapping("/add")
-//    public String addProduct(@ModelAttribute Product product) {
-//        service.create(product);
-//
-//        return "redirect:/admin/data/product";
-//    }
 
     @PostMapping("/add")
     public String addProduct(@ModelAttribute Product product, @RequestParam("file") MultipartFile file) throws IOException {
         product = service.save(product);
-        saveFile(product, file);
+
+        product.setPhoto(ImageUtil.saveImage(
+                product.getClass().getSimpleName(),
+                product.getProductId().toString(), file));
+
+        service.update(product);
+
         return "redirect:/admin/data/product";
     }
 
@@ -77,7 +76,10 @@ public class ProductController {
 
         BeanUtils.copyProperties(updatedProduct, originalProduct, "productId");
         originalProduct.setQuantity(currentQuantity);
-        saveFile(originalProduct, file);
+        originalProduct.setPhoto(
+                ImageUtil.saveImage(originalProduct.getClass().getSimpleName(),
+                originalProduct.getProductId().toString(), file));
+        service.update(originalProduct);
 
         return "redirect:/admin/data/product";
     }
@@ -98,58 +100,6 @@ public class ProductController {
 
     @GetMapping("/image/{id}")
     public void image(@PathVariable Long id, HttpServletResponse response) {
-        Product product = service.getById(id);
-        File file = new File(FILE_ROOT + "/product/" + product.getPhoto());
-        if (file.exists()) {
-            response.setContentType("application/octet-stream");
-            String headerKey = "Content-Disposition";
-            String headerValue = String.format("inline; filename=\"%s\"", file.getName());
-            response.setHeader(headerKey, headerValue);
-            FileInputStream inputStream;
-            try {
-                inputStream = new FileInputStream(file);
-                try {
-                    int c;
-                    while ((c = inputStream.read()) != -1) {
-                        response.getWriter().write(c);
-                    }
-                } finally {
-                    if (inputStream != null) try {
-                        inputStream.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    response.getWriter().close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-
-            }
-        }
-
+        ImageUtil.getImage(Product.class.getSimpleName(), service.getById(id).getPhoto(), response);
     }
-
-
-    public void saveFile(Product product, MultipartFile file) throws IOException {
-
-        new File(FILE_ROOT + "/product").mkdir();
-
-        String fileName = file.getOriginalFilename();
-        String ext = "";
-        if (fileName != null && fileName.contains(".")) {
-            ext = fileName.substring(fileName.lastIndexOf("."));
-        }
-        File sf = new File(FILE_ROOT + "/product/" + product.getProductId() + ext);
-        FileOutputStream fos = new FileOutputStream(sf);
-        BufferedOutputStream bw = new BufferedOutputStream(fos);
-
-        bw.write(file.getBytes());
-        bw.close();
-        fos.close();
-
-        product.setPhoto(sf.getName());
-        service.update(product);
-
-    }
-
 }

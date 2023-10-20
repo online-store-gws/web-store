@@ -36,6 +36,5 @@ out/
 ### VS Code ###
 .vscode/
 
-!/FILES/
-/FILES/*
-!/FILES/nothing
+/src/main/resources/static/FILES/CompanyDetails/**
+/src/main/resources/static/FILES/Product/**
