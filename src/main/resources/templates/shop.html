@@ -92,18 +92,30 @@
                      width="auto" alt="rasm"/>
             </div>
         </div>
-        <div class="col-lg-4 col-6 text-left">
+        <div class="col-lg-4 col-6 text-left" style="position: static !important;">
             <form action="" id="product-search-form">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search for all products" id="search-input">
-                    <span style="position: absolute; right: 55px; top: 50%; transform: translateY(-50%); cursor: pointer; z-index: 10000; display: none;" class="clear-input-icon" id="clear-input-icon"><i class="fa-solid fa-x"></i></span>
+                <div class="input-group search-group" style="position: relative;">
+                    <input type="text" class="form-control search-input" placeholder="Search for all products"
+                           id="search-input">
+                    <span style="position: absolute; right: 55px; top: 50%; transform: translateY(-50%); cursor: pointer; z-index: 10000; display: none;"
+                          class="clear-input-icon" id="clear-input-icon"><i class="fa-solid fa-x"></i></span>
                     <div class="input-group-append">
-                        <button type="submit" class="btn input-group-text bg-transparent text-primary">
+                        <button type="submit" class="btn input-group-text bg-transparent text-primary search-button">
                             <i class="fa fa-search"></i>
                         </button>
                     </div>
+
+                    <div id="autocomplate" class="bg-white shadow-sm"
+                         style="display: none; position: absolute; top: 100%; right: 0; left: 0; z-index: 10; border: 1px solid hsla(220,4%,48%,.3);
+
+                     ">
+                        <ul class="list-group list-group-flush" id="search-result-wrapper">
+
+                        </ul>
+                    </div>
                 </div>
             </form>
+
         </div>
         <div class="nav-item dropdown dropright">
             <a href="#" class="nav-link dropdown-toggle text-dark" data-toggle="dropdown">Customer Service </a>
@@ -506,6 +518,7 @@
 <!-- Contact Javascript File -->
 <script src="mail/jqBootstrapValidation.min.js"></script>
 <script src="mail/contact.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6"></script>
 
 <!-- Template Javascript -->
 <script th:inline="javascript">
@@ -514,13 +527,27 @@
         const searchInput = document.getElementById('search-input');
         const searchResultDiv = document.getElementById('search-result');
         const clearInputIcon = document.getElementById('clear-input-icon');
+        const autocomplate = document.getElementById('autocomplate');
+        const searchResultWrapper = document.getElementById('search-result-wrapper');
         const products = /*[[${products.content}]]*/;
         const originalContent = searchResultDiv.innerHTML;
+
+        const fuse = new Fuse(products, {
+            keys: ['name'],
+            includeMatches: true,
+            threshold: 0.4,
+        });
+
+        document.addEventListener('click', function (event) {
+            if (event.target !== searchInput && event.target !== autocomplate) {
+            autocomplate.style.display = 'none';
+        }
+    });
 
         searchForm.addEventListener('submit', function(event) {
             event.preventDefault();
             const searchTerm = searchInput.value.trim();
-
+            autocomplate.style.display = 'none';
             if (searchTerm !== '') {
                 clearInputIcon.style.display = 'block';
                 searchProducts(searchTerm);
@@ -553,28 +580,52 @@
             }
         });
        searchInput.addEventListener('input', function () {
-             if (searchInput.value.trim() === '') {
-                clearInputIcon.style.display = 'none';
-            } else { clearInputIcon.style.display = 'block';}
+            let searchTerm = searchInput.value.trim();
+             if (searchTerm === '') {
+                autocomplate.style.display = 'none';
+                window.location.reload();
+            } else {
+                clearInputIcon.style.display = 'block';
+                const result = fuse.search(searchTerm);
+                const matches = result.map(match => match.item);
+
+                searchResultWrapper.innerHTML = '';
+
+                if (matches.length > 0) {
+                    autocomplate.style.display = 'block'; // Show the autocomplete when there are matches
+                      for (let i = 0; i < matches.length; i++) {
+                        const searchResult = document.createElement('li');
+                        searchResult.classList.add('list-group-item', 'border-0');
+                        searchResult.innerHTML = `
+                            <i class="fa fa-search mr-2"></i><a href="/product/${matches[i].name}-${matches[i].productId}" class="search-link">${matches[i].name}</a>
+                        `
+                        searchResultWrapper.appendChild(searchResult);
+                      }
+                } else {
+                    autocomplate.style.display = 'none'; // Hide the autocomplete when there are no matches
+                }
+
+            }
        });
         clearInputIcon.addEventListener('click', function () {
             searchInput.value = '';
+            window.location.reload();
             clearInputIcon.style.display = 'none';
         })
 
         function searchProducts(searchTerm) {
             searchTerm = searchTerm.toLowerCase();
+            const result = fuse.search(searchTerm);
+            const matches = result.map(match => match.item);
             searchResultDiv.innerHTML = '';
 
-            for (let i = 0; i < products.length; i++) {
-                const product = products[i];
+            for (let i = 0; i < matches.length; i++) {
+                const product = matches[i];
                 const productName = product.name.toLowerCase();
 
-
-                if (productName.includes(searchTerm)) {
                     const productElement = document.createElement('div');
                     productElement.classList.add('col-lg-4', 'col-sm-6');
-                    console.log(`product.name: ${product.name}, product.productId: ${product.productId}`);
+                     /* console.log(`product.name: ${product.name}, product.productId: ${product.productId}`); */
                     productElement.innerHTML = `
                         <div class="card mb-3 card-shadow clickable-card"
                          data-url="/product/${product.name}-${product.productId}">
@@ -607,7 +658,6 @@
                     </div>
                    `;
                     searchResultDiv.appendChild(productElement);
-                }
             }
 
 
@@ -635,6 +685,7 @@
             });
         });
     });
+
 </script>
 
 <script src="js/main.js"></script>

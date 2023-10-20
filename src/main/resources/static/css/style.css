@@ -9723,3 +9723,26 @@ a.text-dark:hover, a.text-dark:focus {
 .card-body {
     padding: 15px;
 }
+
+.search-group {
+    justify-content: space-between;
+    border: 1px solid #ced4da;
+}
+
+.search-input {
+    border: none;
+    max-width: 365px !important;
+}
+
+.search-button {
+    border-left-width: 2px !important;
+}
+
+.search-link {
+    font-weight: 600;
+    color: black !important;
+}
+
+.search-link:hover {
+    text-decoration: none !important;
+}
