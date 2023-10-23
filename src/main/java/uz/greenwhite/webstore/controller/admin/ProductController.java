@@ -15,7 +15,6 @@ import uz.greenwhite.webstore.service.ProductService;
 import uz.greenwhite.webstore.util.ImageUtil;
 
 import java.io.*;
-import org.springframework.security.core.Authentication;
 import uz.greenwhite.webstore.entity.User;
 import uz.greenwhite.webstore.service.UserService;
 

@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.*;
 import uz.greenwhite.webstore.entity.User;
 import uz.greenwhite.webstore.enums.UserRole;
 import uz.greenwhite.webstore.service.UserService;
-import org.springframework.security.core.Authentication;
 import java.security.Principal;
 import java.util.Optional;
+
 @Controller
 @AllArgsConstructor
 @RequestMapping("/admin/data/seller")
@@ -82,4 +82,3 @@ public class SellerController {
         return "redirect:/admin/data/seller";
     }
 }
-// hillo

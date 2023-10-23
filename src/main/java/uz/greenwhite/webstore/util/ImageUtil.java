@@ -3,12 +3,9 @@ package uz.greenwhite.webstore.util;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.multipart.MultipartFile;
-import uz.greenwhite.webstore.entity.Product;
 
 import java.io.*;
-import java.util.Objects;
 
 @Component
 public class ImageUtil {
@@ -16,8 +13,7 @@ public class ImageUtil {
 
     public static String saveImage(String folderName, String fileName, MultipartFile file) throws IOException {
         String directory = FILE_ROOT + "/" + folderName;
-
-        if(new File(directory).mkdir()) return "";
+        new File(directory).mkdirs();
 
         String ext = "." + StringUtils.getFilenameExtension(file.getOriginalFilename());
         File sf = new File(directory + "/"+ fileName + ext);

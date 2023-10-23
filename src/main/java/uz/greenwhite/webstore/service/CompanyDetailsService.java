@@ -23,9 +23,10 @@ public class CompanyDetailsService {
     
     public CompanyDetails save(CompanyDetails details) {
         if(details.getPhone1()!=null)
-        details.setPhone1("+998 "+details.getPhone1());
+            details.setPhone1(details.getPhone1());
+
         if(details.getPhone2()!=null)
-        details.setPhone2("+998 "+details.getPhone2());
+            details.setPhone2(details.getPhone2());
         return repository.save(details);
     }
 

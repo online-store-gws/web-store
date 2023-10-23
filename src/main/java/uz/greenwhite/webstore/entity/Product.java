@@ -4,9 +4,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.w3c.dom.Text;
-
-import java.sql.Blob;
 
 @Entity
 @Data
@@ -32,6 +29,7 @@ public class Product {
 
     private Boolean isActive;
 
+    @Column(length = 500)
     private String description;
 
     @Transient

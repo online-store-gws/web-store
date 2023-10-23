@@ -5,7 +5,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import uz.greenwhite.webstore.entity.OrderItem;
-import uz.greenwhite.webstore.service.*;
 import uz.greenwhite.webstore.repository.*;
 import java.util.List;
 
@@ -15,7 +14,7 @@ public class OrderItemService {
     private final OrderItemRepository repository;
     private final OrderRepository orderRepository;
 
-    public List<OrderItem> getAllByOrders(Long orderId,Pageable pageable) {
+    public List<OrderItem> getAllByOrders(Long orderId) {
         return repository.findAllByOrders(orderRepository.findById(orderId).orElseThrow(() -> new RuntimeException("Not found")));
     }
 
@@ -28,9 +27,6 @@ public class OrderItemService {
     }
 
     public OrderItem save(OrderItem orderItem) {
-        if (orderItem.getOrderItemId() != null)
-            throw new RuntimeException("Id should be null");
-
         return repository.save(orderItem);
     }
 

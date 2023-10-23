@@ -1,20 +1,16 @@
 package uz.greenwhite.webstore.controller.admin;
 
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.Banner;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import uz.greenwhite.webstore.entity.Category;
 import uz.greenwhite.webstore.service.CategoryService;
-import org.springframework.security.core.Authentication;
 import uz.greenwhite.webstore.entity.User;
 import uz.greenwhite.webstore.service.UserService;
 
 import java.security.Principal;
-import java.util.Objects;
 import java.util.Optional;
 
 @Controller
@@ -76,9 +72,6 @@ public class CategoryController {
             Category category = service.getById(id);
             category.setIsActive(false);
             service.update(category);
-//            noError = false;
-//            return "redirect:admin/data/category/warn/" + category.getCategoryId();
-
         }
         return "redirect:/admin/data/category";
 

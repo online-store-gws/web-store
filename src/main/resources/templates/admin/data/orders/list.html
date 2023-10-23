@@ -52,7 +52,8 @@
                     <td ><a name="" th:href="@{/admin/data/orders/edit(id=${item.orderId})}" th:text="${item.firstName} + ' ' + ${item.lastName}"></a></td>
                     <td th:text="${item.phoneNumber}"></td>
                     <td th:text="${item.status}"></td>  
-                    <td th:text="${item.modifiedBy.firstName} + ' ' + ${item.modifiedBy.lastName}" ></td>
+<!--                    <td th:text="${item.modifiedBy.firstName} + ' ' + ${item.modifiedBy.lastName}" ></td>-->
+                    <td th:text="${item.modifiedBy != null} ? ${item.modifiedBy.firstName + ' ' + item.modifiedBy.lastName} : 'No one'" ></td>
                 </tr>
                 </tbody>
             </table>

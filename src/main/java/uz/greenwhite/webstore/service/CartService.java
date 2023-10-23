@@ -8,7 +8,6 @@ import uz.greenwhite.webstore.entity.Cart;
 import uz.greenwhite.webstore.repository.CartRepository;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @AllArgsConstructor

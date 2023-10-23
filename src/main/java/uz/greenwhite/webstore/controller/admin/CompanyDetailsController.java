@@ -2,8 +2,6 @@ package uz.greenwhite.webstore.controller.admin;
 
 import lombok.AllArgsConstructor;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 
 import org.springframework.data.domain.Pageable;
@@ -16,7 +14,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import uz.greenwhite.webstore.entity.CompanyDetails;
 import uz.greenwhite.webstore.service.CompanyDetailsService;
 import uz.greenwhite.webstore.util.ImageUtil;
-import org.springframework.security.core.Authentication;
 import uz.greenwhite.webstore.entity.User;
 import uz.greenwhite.webstore.service.UserService;
 
@@ -29,7 +26,7 @@ public class CompanyDetailsController {
     private final CompanyDetailsService service;
     private final UserService userService;
     @GetMapping()
-    public String listPage(Model model, Principal principal, Pageable pageable) {
+    public String listPage(Model model, Principal principal) {
          CompanyDetails companyDetails = service.getById(1L); // Retrieve the CompanyDetails entity with ID 1
          model.addAttribute("companyDetails", companyDetails);
          Optional<User> data = userService.findByUsername(principal.getName());

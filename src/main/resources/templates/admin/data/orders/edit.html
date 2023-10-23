@@ -57,7 +57,7 @@
                         <input type="hidden" th:if="${orders.phoneNumber}" th:name="phoneNumber" th:value="${orders.phoneNumber}" />
                         <input type="hidden" th:if="${orders.address}" th:name="address" th:value="${orders.address}" />
                         <input type="hidden" th:if="${orders.comment}" th:name="comment" th:value="${orders.comment}" />
-                        <input type="hidden" th:if="${orders.modifiedBy.userId}" th:name="modifiedBy.userId" th:value="${orders.modifiedBy.userId}" />
+<!--                        <input type="hidden" th:if="${orders.modifiedBy.userId}" th:name="modifiedBy.userId" th:value="${orders.modifiedBy.userId}" />-->
 
                         <div class="form-group" style="text-align: right;">
                             <a class="btn btn-secondary" th:href="@{/admin/data/orders}" role="button">Go
