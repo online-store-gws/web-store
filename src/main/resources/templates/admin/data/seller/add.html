@@ -15,10 +15,10 @@
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <div class="container py-2">
-            <h3 class="text-center my-2">Add Seller</h3>
+            <h3 class="text-center my-2" th:text="${(seller.userId==null) ? 'Add  User' :'Edit User'}"></h3>
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title" th:text="${(seller.userId==null) ? 'Add new seller' :'Edit seller'}"></h4>
+                    <h4 class="card-title" th:text="${(seller.userId==null) ? 'Add new User' :'Edit User'}"></h4>
                 </div>
 
             <div class="card-body">
