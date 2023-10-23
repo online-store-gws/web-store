@@ -41,6 +41,10 @@ public class CartService {
         return cart;
     }
 
+    public int countCart(String token) {
+        return repository.countByToken(token);
+    }
+
     public void deleteById(Long id) {
         repository.deleteById(id);
     }

@@ -91,14 +91,14 @@ public class ProductService {
         return repository.findByPriceBetween(minPrice,maxPrice);
     }
 
-    public Page<Product> getAll(Pageable pageable) {
-        return repository.findAll(pageable);
+    public List<Product> getAll(Pageable pageable) {
+        return repository.findAll(pageable).getContent();
     }
-    public Page<Product> getAllByOrderByPriceAsc(Pageable pageable) {
-        return repository.findAllByOrderByPriceAsc(pageable);
+    public List<Product> getAllByOrderByPriceAsc(Pageable pageable) {
+        return repository.findAllByOrderByPriceAsc(pageable).getContent();
     }
-    public Page<Product> getAllByOrderByPriceDesc(Pageable pageable) {
-        return repository.findAllByOrderByPriceDesc(pageable);
+    public List<Product> getAllByOrderByPriceDesc(Pageable pageable) {
+        return repository.findAllByOrderByPriceDesc(pageable).getContent();
     }
     public List<Product> getByCategory(Category category) {
         return repository.findAllByCategory(category);
@@ -169,9 +169,9 @@ public class ProductService {
             else if(productFrom==null&&productTo!=null&&productOrder==1)return getAllByPriceLessThanOrderByPriceAsc(productTo);
             else if(productFrom!=null&&productTo!=null&&productOrder==1)return getByPriceBetweenOrderByPriceAsc(productFrom,productTo);
 
-            else if(productOrder==null)  return getAll(pageable).getContent();
-            else if(productOrder==1)  return getAllByOrderByPriceAsc(pageable).getContent();
-            else if(productOrder==0) return getAllByOrderByPriceDesc(pageable).getContent();
+            else if(productOrder==null)  return getAll(pageable);
+            else if(productOrder==1)  return getAllByOrderByPriceAsc(pageable);
+            else if(productOrder==0) return getAllByOrderByPriceDesc(pageable);
         }
         return null;
     }

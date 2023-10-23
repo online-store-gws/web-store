@@ -32,7 +32,7 @@
 <!-- Cart Start -->
 <form
     method="post"
-    th:action="@{/cart}"
+    th:action="@{/cart/update}"
     th:object="${carts}"
 >
     <fieldset>
@@ -63,13 +63,6 @@
                                             <i class="fa fa-minus"></i>
                                         </button>
                                     </div>
-<!--                                    <input type="text" id="count" name="count "-->
-<!--                                           class="form-control form-control-sm bg-secondary border-0 text-center"-->
-<!--                                           th:value="${item.count}" th:field="*{cartList[__${itemStat.index}__].count}">-->
-<!--                                    <input type="hidden" id="token" name="token "-->
-<!--                                           class="form-control form-control-sm bg-secondary border-0 text-center"-->
-<!--                                           th:value="${item.token}" th:field="*{cartList[__${itemStat.index}__].token}">-->
-
                                     <input type="text" id="count" name="count"
                                            class="form-control form-control-sm bg-secondary border-0 text-center"
                                            th:value="${item.count}" th:field="*{cartList[__${itemStat.index}__].count}" />
@@ -107,7 +100,7 @@
                             <div class="d-flex justify-content-between mt-2">
                                 <h5>Total</h5>
                                 <span th:with="total=${#aggregates.sum(carts.cartList.![count * product.price])}"
-                                      th:text="@{${total}} + ' so&rsquo;m'">
+                                      th:text="@{${total}} + ' so&rsquo;m'"></span>
 
                             </div>
                             <button type="submit" class="btn btn-block btn-primary font-weight-bold my-3 py-3">

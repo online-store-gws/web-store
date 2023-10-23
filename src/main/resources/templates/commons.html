@@ -132,7 +132,7 @@
                         <a th:href="@{/cart}" class="btn px-0 ml-3">
                             <i class="fas fa-shopping-cart text-primary"></i>
                             <span class="badge text-secondary border border-secondary rounded-circle"
-                                  style="padding-bottom: 2px;">0</span>
+                                  style="padding-bottom: 2px;" th:text="${cartsCount}"></span>
                         </a>
                     </div>
                 </div>
@@ -258,7 +258,7 @@
         const clearInputIcon = document.getElementById('clear-input-icon');
         const autocomplate = document.getElementById('autocomplate');
         const searchResultWrapper = document.getElementById('search-result-wrapper');
-        const products = /*[[${products.content}]]*/;
+        const products = /*[[${products}]]*/;
         const originalContent = searchResultDiv.innerHTML;
 
         const fuse = new Fuse(products, {

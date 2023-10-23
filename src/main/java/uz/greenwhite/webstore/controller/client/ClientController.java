@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import uz.greenwhite.webstore.util.CookieUtil;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @AllArgsConstructor
@@ -29,14 +30,13 @@ public class ClientController {
     private final OrderService orderService;
 
     @GetMapping
-    public String list(Model model, Pageable pageable) {
-        Page<Product> productPage = productService.getAll(pageable);
-        model.addAttribute("products", productPage);
+    public String list(Model model, Pageable pageable, HttpServletRequest request) {
+        model.addAttribute("products", productService.getAll(pageable));
         Page<Category> page = categoryService.getAll(pageable);
         model.addAttribute("categories", page);
         model.addAttribute("elements", page.getTotalElements());
-        Page<CompanyDetails> detailsPage = detailsService.getAll(pageable);
-        model.addAttribute("details", detailsPage);
+        model.addAttribute("details", detailsService.getAll(pageable));
+        model.addAttribute("cartsCount", cartService.countCart(CookieUtil.getSessionCookie(request, null)));
         return "index";
     }
 
@@ -48,17 +48,16 @@ public class ClientController {
         Page<Category> page = categoryService.getAll(pageable);
         model.addAttribute("categories", page);
         model.addAttribute("elements", page.getTotalElements());
-
+        model.addAttribute("products", productService.getAll(pageable));
 
 
         CartDto carts = new CartDto();
         String token = CookieUtil.getSessionCookie(request, response);
-        System.out.println(token);
         ArrayList<Cart> cartArrayList = new ArrayList<>(cartService.getAllByToken(token));
         carts.setCartList(cartArrayList);
         model.addAttribute("carts", carts);
-        Page<CompanyDetails> detailsPage = detailsService.getAll(pageable);
-        model.addAttribute("details", detailsPage);
+        model.addAttribute("cartsCount", cartArrayList.size());
+        model.addAttribute("details", detailsService.getAll(pageable));
         return "/cart";
     }
 
@@ -77,13 +76,12 @@ public class ClientController {
     @GetMapping("/cart/{productId}")
     public String addProduct(@PathVariable Long productId,
                              HttpServletRequest request,
-                             HttpServletResponse response) {
-
+                             HttpServletResponse response, Model model, Pageable pageable) {
+        model.addAttribute("products", productService.getAll(pageable));
         Cart cart = new Cart();
         cart.setToken(CookieUtil.getSessionCookie(request, response));
         cart.setProduct(productService.getById(productId));
         cartService.save(cart);
-        System.out.println(cart.getToken());
         return "redirect:/product/" + productService.getById(productId).getName() + "-" + productId;
     }
 
@@ -104,13 +102,13 @@ public class ClientController {
         Page<Category> page = categoryService.getAll(pageable);
         model.addAttribute("order", new Orders());
         model.addAttribute("categories", page);
+        model.addAttribute("products", productService.getAll(pageable));
         model.addAttribute("elements", page.getTotalElements());
         Page<CompanyDetails> detailsPage = detailsService.getAll(pageable);
         model.addAttribute("details", detailsPage);
-        String token = CookieUtil.getSessionCookie(request, response);
-        System.out.println(token);
-        ArrayList<Cart> carts = cartService.getAllByToken(token);
+        ArrayList<Cart> carts = cartService.getAllByToken(CookieUtil.getSessionCookie(request, response));
         model.addAttribute("carts", carts);
+        model.addAttribute("cartsCount", carts.size());
         return "checkout";
     }
 
@@ -123,31 +121,38 @@ public class ClientController {
 
 
     @GetMapping("/contact")
-    public String contactController(Model model, Pageable pageable) {
+    public String contactController(Model model, Pageable pageable, HttpServletRequest request) {
         Page<Category> page = categoryService.getAll(pageable);
         model.addAttribute("categories", page);
+        model.addAttribute("products", productService.getAll(pageable));
         model.addAttribute("elements", page.getTotalElements());
         Page<CompanyDetails> detailsPage = detailsService.getAll(pageable);
         model.addAttribute("details", detailsPage);
+        model.addAttribute("cartsCount", cartService.countCart(CookieUtil.getSessionCookie(request, null)));
         return "contact";
     }
 
     @GetMapping("/product/{productName}-{productId}")
-    public String detailController(@PathVariable String productName, @PathVariable Long productId, Model model) {
+    public String detailController(@PathVariable String productName, @PathVariable Long productId, Model model, Pageable pageable, HttpServletRequest request) {
         Product productById = productService.getById(productId);
         if (productById == null) {
             return "error";
         }
+        model.addAttribute("details", detailsService.getAll(pageable));
         model.addAttribute("product", productById);
+        model.addAttribute("products", productService.getAll(pageable));
+        model.addAttribute("cartsCount", cartService.countCart(CookieUtil.getSessionCookie(request, null)));
         return "detail";
     }
 
     @GetMapping("/shop")
     public String shopController(@RequestParam(name = "id", required = false) Long categoryId,@RequestParam(name = "order", required = false) Long productOrder,
-    @RequestParam(name = "from", required = false) Long productFrom,@RequestParam(name = "to", required = false) Long productTo,  Model model, Pageable pageable) {
+    @RequestParam(name = "from", required = false) Long productFrom,@RequestParam(name = "to", required = false) Long productTo,  Model model, Pageable pageable,
+                                 HttpServletRequest request) {
         model.addAttribute("filterCategoryId", categoryId);
         model.addAttribute("filterFrom", productFrom);
         model.addAttribute("filterTo", productTo);
+
         model.addAttribute("products", productService.getProduct(categoryId, productFrom, productTo, productOrder, pageable));
 
         Page<Category> page = categoryService.getAll(pageable);
@@ -155,6 +160,7 @@ public class ClientController {
         model.addAttribute("elements", page.getTotalElements());
         Page<CompanyDetails> detailsPage = detailsService.getAll(pageable);
         model.addAttribute("details", detailsPage);
+        model.addAttribute("cartsCount", cartService.countCart(CookieUtil.getSessionCookie(request, null)));
         return "/shop";
     }
 
