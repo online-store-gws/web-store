@@ -15,4 +15,6 @@ public interface CartRepository extends JpaRepository<Cart, Long> {
     Optional<Cart> findByTokenAndProduct(String token, Product product);
 
     List<Cart> findAllByToken(String token);
+
+    int countByToken(String token);
 }
