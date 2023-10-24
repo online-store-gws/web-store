@@ -564,7 +564,7 @@
 <div class="container-fluid pt-5 pb-3">
     <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">Recent Products</span>
     </h2>
-    <div class="row px-xl-5">
+    <div class="row px-xl-5" id="search-result">
         <div class="col-lg-3 col-md-4 col-sm-6" th:each="list:${products}">
             <div class="card mb-3 card-shadow clickable-card"
                  th:attr="data-url='/product/' + ${list.name + '-' + list.productId}">
@@ -643,6 +643,21 @@
 <a th:replace="~{commons::top}" href=""></a>
 
 <th:block th:replace="~{commons::scripts}"></th:block>
+
+<script th:inline="javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+            const searchResultDiv = document.getElementById('search-result');
+            searchResultDiv.addEventListener('click', function(event) {
+            const card = event.target.closest('.clickable-card');
+            if (card) {
+                const url = card.getAttribute('data-url');
+                if (url) {
+                    location.href = url;
+                }
+            }
+        });
+    });
+</script>
 </body>
 
 </html>

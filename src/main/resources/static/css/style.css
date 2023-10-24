@@ -9746,3 +9746,15 @@ a.text-dark:hover, a.text-dark:focus {
 .search-link:hover {
     text-decoration: none !important;
 }
+
+.nav-scroll {
+     max-height: 500px;
+     overflow-y: auto;
+}
+.nav-scroll::-webkit-scrollbar-thumb {
+     background-color: #595959;
+     border-radius: 12px;
+}
+.nav-scroll::-webkit-scrollbar {
+     width: 5px;
+ }
