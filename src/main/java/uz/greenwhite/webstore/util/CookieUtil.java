@@ -23,9 +23,11 @@ public class CookieUtil {
     }
 
     public static String getSessionCookie(HttpServletRequest request, HttpServletResponse response) {
-        for (Cookie cookie : request.getCookies()) {
-            if (cookie.getName().equals(sessionTokenName)) {
-                return cookie.getValue();
+        if(request.getCookies() != null) {
+            for (Cookie cookie : request.getCookies()) {
+                if (cookie.getName().equals(sessionTokenName)) {
+                    return cookie.getValue();
+                }
             }
         }
         return setSessionCookie(response);
@@ -35,7 +37,9 @@ public class CookieUtil {
         String token = generateToken();
         Cookie cookie = new Cookie(sessionTokenName, token);
         cookie.setPath("/");
-        response.addCookie(cookie);
+        System.out.println(response.isCommitted());
+        if(response != null)
+            response.addCookie(cookie);
 
         return token;
     }
