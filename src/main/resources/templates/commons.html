@@ -141,7 +141,7 @@
                 </button>
                 <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                     <div class="navbar-nav mr-auto py-0">
-                        <a th:href="@{/}" class="nav-item nav-link active">Home</a>
+                        <a th:href="@{/}" class="nav-item nav-link ">Home</a>
                         <a th:href="@{/shop}" class="nav-item nav-link">Shop</a>
                         <a th:href="@{/contact}" class="nav-item nav-link">Contact</a>
                     </div>
@@ -255,6 +255,30 @@
                 loader.style.display = 'none';
             }, 1500);
         })
+        $(document).ready(function() {
+            // Get the active link from local storage
+            var activeLink = localStorage.getItem("activeLink");
+
+            // If an active link is found, add the active class to it
+            if (activeLink) {
+                $(".nav-link").removeClass("active");
+                $("a[href='" + activeLink + "']").addClass("active");
+            }
+
+            // Handle click event on nav links
+            $(".nav-link").click(function() {
+                // Remove active class from all links
+                $(".nav-link").removeClass("active");
+
+                // Add active class to the clicked link
+                $(this).addClass("active");
+
+                // Store the active link in local storage
+                var href = $(this).attr("href");
+                localStorage.setItem("activeLink", href);
+            });
+        });
+
       document.addEventListener('DOMContentLoaded', function() {
         const searchForm = document.getElementById('product-search-form');
         const searchInput = document.getElementById('search-input');
