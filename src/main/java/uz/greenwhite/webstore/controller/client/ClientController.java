@@ -30,13 +30,13 @@ public class ClientController {
     private final OrderService orderService;
 
     @GetMapping
-    public String list(Model model, Pageable pageable, HttpServletRequest request) {
+    public String list(Model model, Pageable pageable, HttpServletRequest request, HttpServletResponse response) {
         model.addAttribute("products", productService.getAll(pageable));
         Page<Category> page = categoryService.getAll(pageable);
         model.addAttribute("categories", page);
         model.addAttribute("elements", page.getTotalElements());
         model.addAttribute("details", detailsService.getAll(pageable));
-        model.addAttribute("cartsCount", cartService.countCart(CookieUtil.getSessionCookie(request, null)));
+        model.addAttribute("cartsCount", cartService.countCart(CookieUtil.getSessionCookie(request, response)));
         return "index";
     }
 
@@ -121,19 +121,19 @@ public class ClientController {
 
 
     @GetMapping("/contact")
-    public String contactController(Model model, Pageable pageable, HttpServletRequest request) {
+    public String contactController(Model model, Pageable pageable, HttpServletRequest request, HttpServletResponse response) {
         Page<Category> page = categoryService.getAll(pageable);
         model.addAttribute("categories", page);
         model.addAttribute("products", productService.getAll(pageable));
         model.addAttribute("elements", page.getTotalElements());
         Page<CompanyDetails> detailsPage = detailsService.getAll(pageable);
         model.addAttribute("details", detailsPage);
-        model.addAttribute("cartsCount", cartService.countCart(CookieUtil.getSessionCookie(request, null)));
+        model.addAttribute("cartsCount", cartService.countCart(CookieUtil.getSessionCookie(request, response)));
         return "contact";
     }
 
     @GetMapping("/product/{productName}-{productId}")
-    public String detailController(@PathVariable String productName, @PathVariable Long productId, Model model, Pageable pageable, HttpServletRequest request) {
+    public String detailController(@PathVariable String productName, @PathVariable Long productId, Model model, Pageable pageable, HttpServletRequest request, HttpServletResponse response) {
         Product productById = productService.getById(productId);
         if (productById == null) {
             return "error";
@@ -141,14 +141,14 @@ public class ClientController {
         model.addAttribute("details", detailsService.getAll(pageable));
         model.addAttribute("product", productById);
         model.addAttribute("products", productService.getAll(pageable));
-        model.addAttribute("cartsCount", cartService.countCart(CookieUtil.getSessionCookie(request, null)));
+        model.addAttribute("cartsCount", cartService.countCart(CookieUtil.getSessionCookie(request, response)));
         return "detail";
     }
 
     @GetMapping("/shop")
     public String shopController(@RequestParam(name = "id", required = false) Long categoryId,@RequestParam(name = "order", required = false) Long productOrder,
     @RequestParam(name = "from", required = false) Long productFrom,@RequestParam(name = "to", required = false) Long productTo,  Model model, Pageable pageable,
-                                 HttpServletRequest request) {
+                                 HttpServletRequest request, HttpServletResponse response) {
         model.addAttribute("filterCategoryId", categoryId);
         model.addAttribute("filterFrom", productFrom);
         model.addAttribute("filterTo", productTo);
@@ -160,7 +160,7 @@ public class ClientController {
         model.addAttribute("elements", page.getTotalElements());
         Page<CompanyDetails> detailsPage = detailsService.getAll(pageable);
         model.addAttribute("details", detailsPage);
-        model.addAttribute("cartsCount", cartService.countCart(CookieUtil.getSessionCookie(request, null)));
+        model.addAttribute("cartsCount", cartService.countCart(CookieUtil.getSessionCookie(request, response)));
         return "/shop";
     }
 
