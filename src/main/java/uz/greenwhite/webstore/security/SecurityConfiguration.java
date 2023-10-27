@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,13 +25,6 @@ public class SecurityConfiguration {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring()
-                // Spring Security should completely ignore URLs starting with /resources/
-                .requestMatchers("/resources/**")
-                .requestMatchers("FILES/**");
-    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -43,6 +35,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/admin/data/category/**").hasRole(UserRole.MODERATOR.name())
                         .requestMatchers("/admin/data/product/**").hasRole(UserRole.MODERATOR.name())
                         .requestMatchers("/login").permitAll()
+                        .requestMatchers("/resources/**").permitAll()
                         .requestMatchers("/**")
                         .permitAll()
                         .anyRequest().authenticated()

@@ -1,6 +1,6 @@
 package uz.greenwhite.webstore.controller.admin;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,11 +15,10 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/admin/data/category")
+@AllArgsConstructor
 public class CategoryController {
 
-    @Autowired
     private CategoryService service;
-    @Autowired
     private UserService userService;
 
     @GetMapping()

@@ -12,6 +12,7 @@ import uz.greenwhite.webstore.service.*;
 import org.springframework.ui.Model;
 import org.springframework.data.domain.Pageable;
 import uz.greenwhite.webstore.util.CookieUtil;
+import uz.greenwhite.webstore.util.ImageUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,9 +33,9 @@ public class ClientController {
     @GetMapping
     public String list(Model model, Pageable pageable, HttpServletRequest request, HttpServletResponse response) {
         model.addAttribute("products", productService.getAll(pageable));
-        Page<Category> page = categoryService.getAll(pageable);
+        List<Category> page = categoryService.getAll(pageable);
         model.addAttribute("categories", page);
-        model.addAttribute("elements", page.getTotalElements());
+        model.addAttribute("elements", page.size());
         model.addAttribute("details", detailsService.getAll(pageable));
         model.addAttribute("cartsCount", cartService.countCart(CookieUtil.getSessionCookie(request, response)));
         return "index";
@@ -45,9 +46,9 @@ public class ClientController {
     public String cartController(Model model, Pageable pageable,
                                  HttpServletRequest request,
                                  HttpServletResponse response) {
-        Page<Category> page = categoryService.getAll(pageable);
+        List<Category> page = categoryService.getAll(pageable);
         model.addAttribute("categories", page);
-        model.addAttribute("elements", page.getTotalElements());
+        model.addAttribute("elements", page.size());
         model.addAttribute("products", productService.getAll(pageable));
 
 
@@ -99,12 +100,12 @@ public class ClientController {
     public String checkoutController(Model model, Pageable pageable,
                                      HttpServletRequest request,
                                      HttpServletResponse response) {
-        Page<Category> page = categoryService.getAll(pageable);
+        List<Category> page = categoryService.getAll(pageable);
         model.addAttribute("order", new Orders());
         model.addAttribute("categories", page);
         model.addAttribute("products", productService.getAll(pageable));
-        model.addAttribute("elements", page.getTotalElements());
-        Page<CompanyDetails> detailsPage = detailsService.getAll(pageable);
+        model.addAttribute("elements", page.size());
+        List<CompanyDetails> detailsPage = detailsService.getAll(pageable);
         model.addAttribute("details", detailsPage);
         ArrayList<Cart> carts = cartService.getAllByToken(CookieUtil.getSessionCookie(request, response));
         model.addAttribute("carts", carts);
@@ -122,11 +123,11 @@ public class ClientController {
 
     @GetMapping("/contact")
     public String contactController(Model model, Pageable pageable, HttpServletRequest request, HttpServletResponse response) {
-        Page<Category> page = categoryService.getAll(pageable);
+        List<Category> page = categoryService.getAll(pageable);
         model.addAttribute("categories", page);
         model.addAttribute("products", productService.getAll(pageable));
-        model.addAttribute("elements", page.getTotalElements());
-        Page<CompanyDetails> detailsPage = detailsService.getAll(pageable);
+        model.addAttribute("elements", page.size());
+        List<CompanyDetails> detailsPage = detailsService.getAll(pageable);
         model.addAttribute("details", detailsPage);
         model.addAttribute("cartsCount", cartService.countCart(CookieUtil.getSessionCookie(request, response)));
         return "contact";
@@ -155,15 +156,23 @@ public class ClientController {
 
         model.addAttribute("products", productService.getProduct(categoryId, productFrom, productTo, productOrder, pageable));
 
-        Page<Category> page = categoryService.getAll(pageable);
+        List<Category> page = categoryService.getAll(pageable);
         model.addAttribute("categories", page);
-        model.addAttribute("elements", page.getTotalElements());
-        Page<CompanyDetails> detailsPage = detailsService.getAll(pageable);
+        model.addAttribute("elements", page.size());
+        List<CompanyDetails> detailsPage = detailsService.getAll(pageable);
         model.addAttribute("details", detailsPage);
         model.addAttribute("cartsCount", cartService.countCart(CookieUtil.getSessionCookie(request, response)));
         return "/shop";
     }
 
+    @GetMapping("product/image/{id}")
+    public void productImage(@PathVariable Long id, HttpServletResponse response) {
+        ImageUtil.getImage(Product.class.getSimpleName(), productService.getById(id).getPhoto(), response);
+    }
 
+    @GetMapping("company/image")
+    public void companyImage(HttpServletResponse response) {
+        ImageUtil.getImage(CompanyDetails.class.getSimpleName(), detailsService.getById(1L).getLogoPath(), response);
+    }
 
 }

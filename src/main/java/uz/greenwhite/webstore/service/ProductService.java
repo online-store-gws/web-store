@@ -2,8 +2,7 @@ package uz.greenwhite.webstore.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import uz.greenwhite.webstore.entity.Category;
@@ -12,12 +11,11 @@ import uz.greenwhite.webstore.repository.ProductRepository;
 
 
 @Service
+@AllArgsConstructor
 public class ProductService {
-    @Autowired
-    ProductRepository repository;
+    private final ProductRepository repository;
 
-    @Autowired
-    CategoryService categoryService;
+    private final CategoryService categoryService;
 
     public List<Product> getAllByPriceGreaterThanOrderByPriceDesc(Long price){
         return repository.findAllByPriceGreaterThanOrderByPriceDesc(price);

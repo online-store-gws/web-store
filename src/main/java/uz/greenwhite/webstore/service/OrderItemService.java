@@ -1,7 +1,6 @@
 package uz.greenwhite.webstore.service;
 
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import uz.greenwhite.webstore.entity.OrderItem;
@@ -18,8 +17,8 @@ public class OrderItemService {
         return repository.findAllByOrders(orderRepository.findById(orderId).orElseThrow(() -> new RuntimeException("Not found")));
     }
 
-    public Page<OrderItem> getAll(Pageable pageable) {
-        return repository.findAll(pageable);
+    public List<OrderItem> getAll(Pageable pageable) {
+        return repository.findAll(pageable).getContent();
     }
 
     public OrderItem getById(Long id) {

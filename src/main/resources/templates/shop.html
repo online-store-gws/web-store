@@ -91,7 +91,7 @@
                          th:attr="data-url='/product/' + ${list.name + '-' + list.productId}">
                         <div class="product-img position-relative overflow-hidden">
                             <img class="img-fluid card-img-top w-100"
-                                 th:src="@{|/admin/data/product/image/${list.productId}|}"
+                                 th:src="@{|/product/image/${list.productId}|}"
                                  alt="rasm"/>
                             <div class="product-action">
                                 <a class="btn btn-outline-dark btn-square" href=""><i
@@ -196,7 +196,7 @@
                          data-url="/product/${product.name}-${product.productId}">
                         <div class="product-img position-relative overflow-hidden">
                             <img class="img-fluid card-img-top w-100"
-                                 src="/admin/data/product/image/${product.productId}" alt="rasm"/>
+                                 src="/image/${product.productId}" alt="rasm"/>
                             <div class="product-action">
                                 <a class="btn btn-outline-dark btn-square" href=""><i
                                         class="fa fa-shopping-cart"></i></a>

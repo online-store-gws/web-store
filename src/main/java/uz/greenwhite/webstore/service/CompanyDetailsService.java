@@ -2,19 +2,20 @@ package uz.greenwhite.webstore.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import uz.greenwhite.webstore.entity.CompanyDetails;
 import uz.greenwhite.webstore.repository.CompanyDetailsRepository;
+
+import java.util.List;
 
 @Service
 @AllArgsConstructor
 public class CompanyDetailsService {
     private final CompanyDetailsRepository repository;
 
-    public Page<CompanyDetails> getAll(Pageable pageable) {
-        return repository.findAll(pageable);
+    public List<CompanyDetails> getAll(Pageable pageable) {
+        return repository.findAll(pageable).getContent();
     }
 
     public CompanyDetails getById(Long id) {

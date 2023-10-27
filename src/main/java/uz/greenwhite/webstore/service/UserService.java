@@ -1,7 +1,6 @@
 package uz.greenwhite.webstore.service;
 
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -11,6 +10,7 @@ import org.springframework.stereotype.Service;
 import uz.greenwhite.webstore.entity.User;
 import uz.greenwhite.webstore.repository.UserRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -26,8 +26,8 @@ public class UserService implements UserDetailsService {
         return repository.findByUsername(username);
     }
 
-    public Page<User> getAll(Pageable pageable) {
-        return repository.findAll(pageable);
+    public List<User> getAll(Pageable pageable) {
+        return repository.findAll(pageable).getContent();
     }
 
     public User getById(Long id) {

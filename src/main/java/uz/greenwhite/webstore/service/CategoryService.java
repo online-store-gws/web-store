@@ -1,13 +1,14 @@
 package uz.greenwhite.webstore.service;
 
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import uz.greenwhite.webstore.entity.Category;
 import uz.greenwhite.webstore.entity.Product;
 import uz.greenwhite.webstore.repository.CategoryRepository;
 import uz.greenwhite.webstore.repository.ProductRepository;
+
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -16,8 +17,8 @@ public class CategoryService {
 
     private final ProductRepository productRepository;
 
-    public Page<Category> getAll(Pageable pageable) {
-        return repository.findAll(pageable);
+    public List<Category> getAll(Pageable pageable) {
+        return repository.findAll(pageable).getContent();
     }
 
     public Category getById(Long id) {

@@ -1,13 +1,13 @@
 package uz.greenwhite.webstore.service;
 
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import uz.greenwhite.webstore.entity.Cart;
 import uz.greenwhite.webstore.repository.CartRepository;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -15,8 +15,8 @@ public class CartService {
 
     private final CartRepository repository;
 
-    public Page<Cart> getAll(Pageable pageable) {
-        return repository.findAll(pageable);
+    public List<Cart> getAll(Pageable pageable) {
+        return repository.findAll(pageable).getContent();
     }
 
     public ArrayList<Cart> getAllByToken(String token) {

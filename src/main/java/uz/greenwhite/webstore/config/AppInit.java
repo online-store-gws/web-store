@@ -12,7 +12,6 @@ import com.github.javafaker.Faker;
 @Component
 @AllArgsConstructor
 public class AppInit implements ApplicationRunner {
-    //
     private final UserService userService;
     private final CategoryService categoryService;
 
@@ -21,12 +20,12 @@ public class AppInit implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        Faker faker =new Faker();
+        Faker faker = new Faker();
 
         User admin = new User();
         if (userService.findByUsername("admin").isEmpty()) {
             admin.setFirstName(faker.name().firstName());
-            admin.setLastName(faker.name().lastName());   
+            admin.setLastName(faker.name().lastName());
             admin.setRole(UserRole.MODERATOR);
             admin.setUsername("admin");
             admin.setPassword("123");
@@ -38,31 +37,32 @@ public class AppInit implements ApplicationRunner {
             Category category = new Category();
             category.setCategoryName(faker.book().genre());
             categoryService.save(category);
-    
-            for (int j = 0; j <1; j++) {
-                Product product = new Product();
-                product.setName(faker.commerce().productName());
-                product.setPrice((long)(faker.number().numberBetween(10000,1000000)));
-                product.setCategory(category); 
-                product.setPhoto("jpg");
-                product.setQuantity( faker.number().randomDigit());
-                product.setDescription(faker.lorem().paragraph());
-                productService.save(product);
-            }
+
+
+            Product product = new Product();
+            product.setName(faker.commerce().productName());
+            product.setPrice((long) (faker.number().numberBetween(10000, 1000000)));
+            product.setCategory(category);
+            product.setQuantity(faker.number().randomDigit());
+            product.setDescription(faker.lorem().paragraph());
+            product = productService.save(product);
+            product.setPhoto(product.getProductId().toString());
+            productService.update(product);
+
         }
-       
-            User user = new User();
-            user.setFirstName(faker.name().firstName());
-            user.setLastName(faker.name().lastName());    
-            user.setRole(UserRole.SELLER);
-            user.setUsername(faker.name().username());
-            user.setPassword(faker.internet().password());
-            userService.save(user);
+
+        User user = new User();
+        user.setFirstName(faker.name().firstName());
+        user.setLastName(faker.name().lastName());
+        user.setRole(UserRole.SELLER);
+        user.setUsername(faker.name().username());
+        user.setPassword(faker.internet().password());
+        userService.save(user);
 
         if (userService.findByUsername("seller").isEmpty()) {
             User seller = new User();
             seller.setFirstName(faker.name().firstName());
-            seller.setLastName(faker.name().lastName()); 
+            seller.setLastName(faker.name().lastName());
             seller.setRole(UserRole.SELLER);
             seller.setUsername("seller");
             seller.setPassword("123");
@@ -76,7 +76,11 @@ public class AppInit implements ApplicationRunner {
         details.setCompanyName("Chorsu bozor");
         details.setAddress("Chorsu");
         details.setPhone1("+99897788888");
+        details.setInstagramUrl("https://instagram.com");
+        details.setTelegramUrl("https://telegram.org/");
+        details.setLocationUrl("https://maps.app.goo.gl/XVfCHRSB77gL5VJ59");
+        details.setLogoPath(String.valueOf(1L));
         companyDetailsService.save(details);
 
-        }
     }
+}

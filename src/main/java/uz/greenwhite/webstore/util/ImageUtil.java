@@ -15,8 +15,7 @@ public class ImageUtil {
         String directory = FILE_ROOT + "/" + folderName;
         new File(directory).mkdirs();
 
-        String ext = "." + StringUtils.getFilenameExtension(file.getOriginalFilename());
-        File sf = new File(directory + "/"+ fileName + ext);
+        File sf = new File(directory + "/"+ fileName);
         BufferedOutputStream bw = new BufferedOutputStream(new FileOutputStream(sf));
 
         bw.write(file.getBytes());
