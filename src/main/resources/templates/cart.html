@@ -51,7 +51,7 @@
                         </thead>
                         <tbody class="align-middle">
                         <tr th:each=" item, itemStat: *{cartList}">
-                            <td class="align-middle"><img th:src="@{|/admin/data/product/image/${item.product.productId}|}"
+                            <td class="align-middle"><img th:src="@{|/product/image/${item.product.productId}|}"
                                                           alt="rasm" style="width: 50px;" >
                             </td>
                             <td class="align-middle" th:text="${item.product.name}"></td>

@@ -570,7 +570,7 @@
                  th:attr="data-url='/product/' + ${list.name + '-' + list.productId}">
                 <div class="product-img position-relative overflow-hidden">
                     <img class="img-fluid card-img-top w-100"
-                         th:src="@{|/company/image|}"
+                         th:src="@{|/product/image/${list.productId}|}"
                          alt="rasm"/>
                     <div class="product-action">
                         <a class="btn btn-outline-dark btn-square" href=""><i
