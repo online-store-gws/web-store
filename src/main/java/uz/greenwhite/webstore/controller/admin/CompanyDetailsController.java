@@ -30,7 +30,7 @@ public class CompanyDetailsController {
          model.addAttribute("companyDetails", companyDetails);
          Optional<User> data = userService.findByUsername(principal.getName());
          model.addAttribute("name", data.isPresent() ? data.get().getFirstName() : "User");
-         return "/admin/data/companyDetails/add";
+         return "admin/data/companyDetails/add";
     }
    
     @GetMapping("/edit")
@@ -39,7 +39,7 @@ public class CompanyDetailsController {
         model.addAttribute("name", data.isPresent() ? data.get().getFirstName() : "User");
        CompanyDetails companyDetails = service.getById(1L); // Retrieve the CompanyDetails entity with ID 1
        model.addAttribute("companyDetails", companyDetails);
-       return "/admin/data/companyDetails/add";
+       return "admin/data/companyDetails/add";
     }
     
     @PostMapping("/edit")

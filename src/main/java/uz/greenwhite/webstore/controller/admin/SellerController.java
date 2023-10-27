@@ -23,7 +23,7 @@ public class SellerController {
         Optional<User> data = service.findByUsername(principal.getName());
         model.addAttribute("name", data.isPresent() ? data.get().getFirstName() : "User");
         model.addAttribute("seller", service.getAll(pageable));
-        return "/admin/data/seller/list";
+        return "admin/data/seller/list";
     }
 
     @GetMapping("/add")
@@ -33,7 +33,7 @@ public class SellerController {
         model.addAttribute("seller", new User());
         model.addAttribute("ROLE_SELLER", UserRole.SELLER);
         model.addAttribute("ROLE_MODERATOR", UserRole.MODERATOR);
-        return "/admin/data/seller/add";
+        return "admin/data/seller/add";
     }
 
     @PostMapping("/add")
@@ -48,7 +48,7 @@ public class SellerController {
         model.addAttribute("name", data.isPresent() ? data.get().getFirstName() : "User");
         User seller = service.getById(id);
         model.addAttribute("seller", seller);
-        return "/admin/data/seller/add";
+        return "admin/data/seller/add";
     }
 
     @PostMapping("/edit")

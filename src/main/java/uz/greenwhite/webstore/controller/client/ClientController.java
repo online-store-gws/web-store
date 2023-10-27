@@ -3,7 +3,6 @@ package uz.greenwhite.webstore.controller.client;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import uz.greenwhite.webstore.dto.CartDto;
@@ -59,7 +58,7 @@ public class ClientController {
         model.addAttribute("carts", carts);
         model.addAttribute("cartsCount", cartArrayList.size());
         model.addAttribute("details", detailsService.getAll(pageable));
-        return "/cart";
+        return "cart";
     }
 
     @PostMapping("/cart/update")
@@ -162,7 +161,7 @@ public class ClientController {
         List<CompanyDetails> detailsPage = detailsService.getAll(pageable);
         model.addAttribute("details", detailsPage);
         model.addAttribute("cartsCount", cartService.countCart(CookieUtil.getSessionCookie(request, response)));
-        return "/shop";
+        return "shop";
     }
 
     @GetMapping("product/image/{id}")

@@ -35,7 +35,7 @@ public class OrdersController {
         model.addAttribute("name", data.isPresent() ? data.get().getFirstName() : "User");
         model.addAttribute("orders", orderService.getOrders(orderStatus, filterOrders, pageable));
 
-        return "/admin/data/orders/list";
+        return "admin/data/orders/list";
     }
 
 
@@ -45,7 +45,7 @@ public class OrdersController {
         model.addAttribute("name", data.isPresent() ? data.get().getFirstName() : "User");
         model.addAttribute("orders", orderService.getById(id));
         model.addAttribute("orderItems", orderItemService.getAllByOrders(id));
-        return "/admin/data/orders/edit";
+        return "admin/data/orders/edit";
     }
 
     @PostMapping("/edit")

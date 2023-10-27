@@ -37,7 +37,7 @@ public class ProductController {
         Optional<User> data = userService.findByUsername(principal.getName());
         model.addAttribute("name", data.isPresent() ? data.get().getFirstName() : "User");
         model.addAttribute("products", service.getAll(pageable));
-        return "/admin/data/product/list";
+        return "admin/data/product/list";
     }
 
 
@@ -47,7 +47,7 @@ public class ProductController {
         model.addAttribute("name", data.isPresent() ? data.get().getFirstName() : "User");
         model.addAttribute("product", new Product());
         model.addAttribute("categories", categoryService.getAll(pageable));
-        return "/admin/data/product/add";
+        return "admin/data/product/add";
     }
 
     @PostMapping("/add")

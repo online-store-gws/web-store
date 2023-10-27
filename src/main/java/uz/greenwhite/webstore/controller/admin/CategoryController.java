@@ -14,7 +14,7 @@ import java.security.Principal;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/admin/data/category")
+@RequestMapping("admin/data/category")
 @AllArgsConstructor
 public class CategoryController {
 
@@ -26,13 +26,13 @@ public class CategoryController {
         model.addAttribute("categories", service.getAll(pageable));
         Optional<User> data = userService.findByUsername(principal.getName());
         model.addAttribute("name", data.isPresent() ? data.get().getFirstName() : "User");
-        return "/admin/data/category/list";
+        return "admin/data/category/list";
     }
 
     @GetMapping("warn/{id}")
     public String warn(@PathVariable Long id, Model model) {
         model.addAttribute("warnCategory", service.getById(id));
-        return "/admin/data/category/list";
+        return "admin/data/category/list";
     }
 
     @GetMapping("/add")
@@ -40,13 +40,13 @@ public class CategoryController {
         Optional<User> data = userService.findByUsername(principal.getName());
         model.addAttribute("name", data.isPresent() ? data.get().getFirstName() : "User");
         model.addAttribute("category", new Category());
-        return "/admin/data/category/add";
+        return "admin/data/category/add";
     }
 
     @PostMapping("/add")
     public String addCategory(@ModelAttribute Category category) {
         service.save(category);
-        return "redirect:/admin/data/category";
+        return "redirect:admin/data/category";
     }
 
     @GetMapping("/edit")
@@ -54,7 +54,7 @@ public class CategoryController {
         Optional<User> data = userService.findByUsername(principal.getName());
         model.addAttribute("name", data.isPresent() ? data.get().getFirstName() : "User");
         model.addAttribute("category", service.getById(id));
-        return "/admin/data/category/add";
+        return "admin/data/category/add";
     }
 
     @PostMapping("/edit")
